@@ -1,16 +1,17 @@
 {
-    "name": "NetPeek"
+    "name": "NetQwikFilter"
   , "version": "0.1.0"
   , "private": true
-  , "repository": { "type": "git", "url": "https://github.com/EhevuTov/netPeek.git"}
+  , "repository": { 
+      "type": "git"
+    , "url": "https://github.com/EhevuTov/netQwikFilter.git"
+  }
+  , "directories": {
+  }
   , "dependencies": {
-      "express": ">=2.4.x"
-    , "jade": ">= 0.0.1"
-    , "socket.io": ">= 0.8.x"
-    , "zmq": ">= 2.x.x"
+      "express": "2.x"
+    , "jade": "*"
+    , "socket.io": "*"
+    , "event-stream": "*"
   }
-  , "devDependencies": {
-      "vows": ">= 0.5.x"
-  }
-  , "engine": "node >= 0.4.x"
 }

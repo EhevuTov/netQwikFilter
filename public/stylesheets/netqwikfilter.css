@@ -1,6 +1,6 @@
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/claro/claro.css";
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojox/grid/resources/Grid.css";
-@import "http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojox/grid/resources/claroGrid.css";
+@import "http://ajax.googleapis.com/ajax/libs/dojo/1.8/dijit/themes/claro/claro.css";
+@import "http://ajax.googleapis.com/ajax/libs/dojo/1.8/dojox/grid/resources/Grid.css";
+@import "http://ajax.googleapis.com/ajax/libs/dojo/1.8/dojox/grid/resources/claroGrid.css";
 
 html,body {
   width: 100%;
@@ -73,7 +73,7 @@ border-radius:4px;
 -moz-border-radius: 4px 4px 4px 4px;
 -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 background-color: #E4F2FF;
-background-image: url("http://ajax.googleapis.com/ajax/libs/dojo/1/dijit/themes/claro/form/images/button.png");
+background-image: url("http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/claro/form/images/button.png");
 background-position: center top;
 background-repeat: repeat-x;
 border: 1px solid #769DC0;

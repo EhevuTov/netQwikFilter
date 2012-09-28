@@ -1,9 +1,33 @@
 // Module dependencies
 
 var express = require( 'express' )
-var zmq     = require( 'zmq' )
 var app     = module.exports = express.createServer()
 var io      = require( 'socket.io' ).listen(app)
+var fs      = require( 'fs' )
+var net     = require( 'net' )
+
+var filename = './modules/cdr/test/test.csv';
+var local = false;
+
+var rs;
+if (local){
+  rs = fs.createReadStream(filename, {encoding: 'ascii'});
+}
+else {
+  rs = net.connect({host: '192.168.1.46', port: 2001},
+    function() { //'connect' listener
+      console.log('client connected');
+    });
+};
+
+rs.on("data", function(data){
+  });
+rs.on("error", function(err){
+  console.error("An error occurred: %s", err)
+});
+rs.on("close", function(){
+  console.log("File closed.")
+});
 
 // Configuration
 
@@ -29,13 +53,13 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
   res.render('index', {
-    title: 'NetPeek'
+    title: 'NetQwikFilter'
   });
 });
 
-app.get('/netpeek', function(req, res){
-  res.render('netpeek', {
-    title: 'NetPeek',
+app.get('/netqwikfilter', function(req, res){
+  res.render('netqwikfilter', {
+    title: 'NetQwikFilter',
     layout: false
   });
 });
@@ -55,20 +79,16 @@ app.get('/contact', function(req, res){
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-// ZeroMQ MSU Subscriber
-console.log( "Subscribing..." )
-sub = zmq.socket( 'sub' )
-sub.connect( "tcp://localhost:5000" )
-
-// ZeroMQ set subscribe to all incoming
-sub.subscribe( '' )
+var sendCDR = function (data, socket) {
+  io.sockets.emit('cdr', data);
+};
 
 // Socket.IO on connect, start sending MSUs from the ZeroMQ sub
 io.sockets.on( 'connection', function (socket) {
-  sub.on( 'message', function (data) {
-    socket.emit( 'msu', data.toString() );
-  })
-})
+  socket.emit('columns', { data: 4 });
+  require('./cdr')(rs,socket).on('data', sendCDR );
+});
+io.sockets.on('disconnect', function() {});
 
 // gracefully exit program
 process.on( 'SIGINT', function() {
