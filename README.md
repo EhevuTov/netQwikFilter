@@ -1,7 +1,6 @@
 ## Description
 
-This is a demo of a realtime phone call generator between a console
-server and a web client
+This is a real-time CDR read stream
 
 ## Features
 
@@ -14,15 +13,3 @@ server and a web client
 - msu/sec graph
 - filters
 - decode message window
-
-## Usage
-
-### Web
-
-    node support/msu_gen.js
-    node app.js
-
-### Console
-
-    node support/msu_gen.js
-    node support/msu_cap.js
