@@ -1,0 +1,15 @@
+{
+  "name": "test",
+  "version": "0.0.0",
+  "description": "test for the app",
+  "main": "test.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": "",
+  "author": "James Gosnell",
+  "license": "BSD",
+  "dependencies": {
+    "event-stream": "*"
+  }
+}

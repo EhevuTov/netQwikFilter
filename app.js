@@ -6,22 +6,23 @@ var io      = require( 'socket.io' ).listen(app)
 var fs      = require( 'fs' )
 var net     = require( 'net' )
 
-var filename = './modules/cdr/test/test.csv';
-var local = false;
+var filename = './test/test.csv';
+var local = true;
 
 var rs;
 if (local){
-  rs = fs.createReadStream(filename, {encoding: 'ascii'});
+  rs = fs.createReadStream(filename, {encoding: 'ascii', bufferSize:64});
 }
 else {
   rs = net.connect({host: '192.168.1.46', port: 2001},
-    function() { //'connect' listener
+    function() {
       console.log('client connected');
     });
 };
 
 rs.on("data", function(data){
-  });
+  if(local) { rs.pause(); setTimeout(function(){rs.resume()}, 1500)};
+});
 rs.on("error", function(err){
   console.error("An error occurred: %s", err)
 });
