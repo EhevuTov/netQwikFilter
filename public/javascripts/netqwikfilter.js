@@ -49,6 +49,9 @@ socket.on('columns', function(data) {
     console.log(data.data);
 });
 
+socket.on('start', function(data) {
+  console.log(data)
+});
 
 function toObject(string) {
   var arr = string.split(',');
@@ -67,13 +70,13 @@ function put_cdr (string) {
 
 function socket_start() {
   console.log( "clicked" )
-  socket.on( 'cdr', put_cdr )
   socket.emit( 'start' )
+  socket.on( 'cdr', put_cdr )
 }
 function socket_stop() {
   console.log( "clicked" )
-  socket.removeListener( 'cdr', put_cdr )
   socket.emit( 'stop' )
+  socket.removeListener( 'cdr', put_cdr )
 }
 dojo.connect( dojo.byId( 'startStream' ), 'click', socket_start)
 dojo.connect( dojo.byId( 'stopStream' ), 'click', socket_stop)
