@@ -1,13 +1,9 @@
 var net = require('net');
-var fs = require('fs');
 var events = require('events');
 var es = require('event-stream');
-//var stream = require ('stream');
 
-//var cdr = new stream();
 //cdr = function(istream,patterns,ostream) {
 cdr = function(istream,socket,ostream) {
-
 
   var patterns = [/Lab 46/g, /danielle/g];
   var columns = patterns.length;
@@ -21,7 +17,7 @@ cdr = function(istream,socket,ostream) {
   };
 
   return es.pipeline(
-      istream
+    istream
     , es.replace('\'','')
     , es.split()
       /*
@@ -31,11 +27,6 @@ cdr = function(istream,socket,ostream) {
          }),
        */
     , es.mapSync(filter)
-      //pr(columns).parseRow,
-      //pr(columns),
-//    , es.join('\n')
-//      , ostream
-//    , socket
   );
   
 };
