@@ -42,16 +42,8 @@ var dataStore = new dojo.data.ObjectStore({objectStore: cdrStore});
 dijit.registry.byId('grid').setStore(dataStore);
 
 // Socket.IO connection
-var socket = io.connect( 'http://localhost' );
+var socket;
 var columns;
-socket.on('columns', function(data) { 
-    columns = data;
-    console.log(data.data);
-});
-
-socket.on('start', function(data) {
-  console.log(data)
-});
 
 function toObject(string) {
   var arr = string.split(',');
@@ -70,6 +62,10 @@ function put_cdr (string) {
 
 function socket_start() {
   console.log( "clicked" )
+  socket = io.connect( 'http://localhost' );
+  socket.on('start', function(data) {
+    console.log(data)
+  });
   socket.emit( 'start' )
   socket.on( 'cdr', put_cdr )
 }
@@ -77,6 +73,7 @@ function socket_stop() {
   console.log( "clicked" )
   socket.emit( 'stop' )
   socket.removeListener( 'cdr', put_cdr )
+  socket.disconnect();
 }
 dojo.connect( dojo.byId( 'startStream' ), 'click', socket_start)
 dojo.connect( dojo.byId( 'stopStream' ), 'click', socket_stop)

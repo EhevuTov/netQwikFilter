@@ -82,27 +82,24 @@ app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 //maybe make closure here
-function sendCDR (data, socket) {
-  io.sockets.emit('cdr', data);
-  console.log(data);
-  console.log(typeof(socket));
-  //socket.emit('cdr', data);
+function sendCDR (socket) {
+  return function (data) {
+    socket.emit('cdr', data);
+  }
 };
 
-// Socket.IO on connect, start sending MSUs from the ZeroMQ sub
+// Socket.IO on connect, start sending CDRs
 io.sockets.on( 'connection', function (socket) {
-  //socket.emit('columns', { data: 4 });
   socket.on('start', function(from, msg) {
     console.log('received a start event from: '+from+ ' with data: '+msg);
     socket.emit('start', 'started stream');
-    cdr(rs,socket).on('data', function(data,socket){sendCDR(data,socket)} );
+    cdr(rs).on('data', sendCDR(socket) );
   });
   socket.on('stop', function(from, msg) {
     console.log('received a start event from: '+from+ ' with data: '+msg);
     socket.emit('stop', 'stopped stream');
-    //delete require('./cdr')(rs,socket).on('data', sendCDR );
+    socket.disconnect();
   });  
-  //require('./cdr')(rs,socket).on('data', sendCDR );
 });
 io.sockets.on('disconnect', function() {});
 

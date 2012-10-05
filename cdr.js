@@ -32,4 +32,3 @@ cdr = function(istream,socket,ostream) {
 };
 
 module.exports = cdr;
-
