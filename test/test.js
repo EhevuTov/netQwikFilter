@@ -1,5 +1,6 @@
 var fs = require('fs');
 var net = require('net');
+var cdr = require('../cdr');
 
 var filename = './test.csv';
 var local = true;
@@ -19,7 +20,7 @@ else {
 rs.on("data", function(data){
   if (local) {
     rs.pause();
-    setTimeout(function(){rs.resume()}, 500);
+    setTimeout(function(){rs.resume()}, 100);
   }
 });
 rs.on("error", function(err){
@@ -29,5 +30,4 @@ rs.on("close", function(){
   console.log("File closed.")
 });
 
-require('../cdr')(rs).pipe(process.stdout)
-
+cdr(rs).pipe(process.stdout)
