@@ -5,6 +5,7 @@ var app     = module.exports = express.createServer()
 var io      = require( 'socket.io' ).listen(app)
 var fs      = require( 'fs' )
 var net     = require( 'net' )
+var cdr     = require( './cdr' )
 
 var filename = './test/test.csv';
 var local = true;
@@ -80,14 +81,28 @@ app.get('/contact', function(req, res){
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
-var sendCDR = function (data, socket) {
+//maybe make closure here
+function sendCDR (data, socket) {
   io.sockets.emit('cdr', data);
+  console.log(data);
+  console.log(typeof(socket));
+  //socket.emit('cdr', data);
 };
 
 // Socket.IO on connect, start sending MSUs from the ZeroMQ sub
 io.sockets.on( 'connection', function (socket) {
-  socket.emit('columns', { data: 4 });
-  require('./cdr')(rs,socket).on('data', sendCDR );
+  //socket.emit('columns', { data: 4 });
+  socket.on('start', function(from, msg) {
+    console.log('received a start event from: '+from+ ' with data: '+msg);
+    socket.emit('start', 'started stream');
+    cdr(rs,socket).on('data', function(data,socket){sendCDR(data,socket)} );
+  });
+  socket.on('stop', function(from, msg) {
+    console.log('received a start event from: '+from+ ' with data: '+msg);
+    socket.emit('stop', 'stopped stream');
+    //delete require('./cdr')(rs,socket).on('data', sendCDR );
+  });  
+  //require('./cdr')(rs,socket).on('data', sendCDR );
 });
 io.sockets.on('disconnect', function() {});
 
